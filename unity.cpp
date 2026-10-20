@@ -82,7 +82,7 @@ std::vector<GameObject> GameObjectManager::List_traverse_1()
             GameObject obj = GameObject::Read(objAddr);
             GameObjects.push_back(obj);
         }
-        node = read<Ptr32>(node + 0x04);
+        node = read<Ptr32>(node + 0x4);
     }
     return GameObjects;
 }
@@ -100,7 +100,7 @@ std::vector<GameObject> GameObjectManager::List_traverse_2()
             GameObject obj = GameObject::Read(objAddr);
             GameObjects.push_back(obj);
         }
-        node = read<Ptr32>(node + 0x04);
+        node = read<Ptr32>(node + 0x4);
     }
     return GameObjects;
 }
@@ -121,7 +121,7 @@ std::string GameObject::CompIdToName(int typeId) {
     uint32_t typeDesc = read<uint32_t>(typeTable + typeId * 0x4);
     if (!typeDesc) return "";
 
-    uint32_t namePtr = read<uint32_t>(typeDesc + 0x08);
+    uint32_t namePtr = read<uint32_t>(typeDesc + 0x8);
     if (!namePtr) return "";
 
     char buf[64] = {};
@@ -200,7 +200,7 @@ std::string Component::GetTypeName()
 {
     int typeId = this->GetTypeId();
     Ptr32 typeDesc = read<Ptr32>(typeTable + typeId * 4);
-    Ptr32 namePtr = read<Ptr32>(typeDesc + 0x08);
+    Ptr32 namePtr = read<Ptr32>(typeDesc + 0x8);
 
     char buf[64] = {};
     read_str(namePtr, buf, sizeof(buf));
@@ -264,7 +264,7 @@ Vec3 Transform::GetWorldPos() {
     if (index > 100000) return {};
 
     Ptr32 entry = arrayBase + 0x30 * index;
-    Vec3 world = read<Vec3>(entry + 0x00);
+    Vec3 world = read<Vec3>(entry);
 
     int parentIdx = read<int>(parentArray + 4 * index);
     int depth = 0;
@@ -364,7 +364,7 @@ std::string MonoBehaviour::GetScriptName() {
     Ptr32 VVV = read<Ptr32>(addr + 0x44);
     if (!VVV) return "";
 
-    Ptr32 MonoClass = read<Ptr32>(VVV + 0x04);
+    Ptr32 MonoClass = read<Ptr32>(VVV + 0x4);
     if (!MonoClass) return "";
 
     Ptr32 MamePtr = read<Ptr32>(MonoClass + 0x2C);
