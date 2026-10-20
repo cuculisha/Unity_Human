@@ -36,10 +36,6 @@ struct Vec2 {
         return { x / len, y / len };
     }
 
-    bool NotBothMinusOne() const {
-        return !(x == -1.f && y == -1.f);
-    }
-
     static float Dot(const Vec2& a, const Vec2& b) { return a.x * b.x + a.y * b.y; }
     static float Distance(const Vec2& a, const Vec2& b) { return (a - b).Length(); }
 };
